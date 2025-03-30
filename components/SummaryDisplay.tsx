@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import html2pdf from 'html2pdf.js';
+import React, { useRef, useState, useEffect } from 'react';
+// Remove static import of html2pdf
+// import html2pdf from 'html2pdf.js';
 
 interface SummaryProps {
   summary: {
@@ -70,28 +71,36 @@ export default function SummaryDisplay({ summary }: SummaryProps) {
   };
 
   // Export as PDF
-  const exportToPDF = () => {
+  const exportToPDF = async () => {
     if (!summaryContentRef.current) return;
     
-    // Set PDF options
-    const options = {
-      margin: [0.5, 0.5, 0.5, 0.5],
-      filename: 'summary.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
-    };
+    try {
+      // Dynamically import html2pdf only when needed
+      const html2pdfModule = await import('html2pdf.js');
+      const html2pdf = html2pdfModule.default;
+      
+      // Set PDF options
+      const options = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: 'summary.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
+      };
 
-    // Create a clone of the content to modify for PDF
-    const content = summaryContentRef.current.cloneNode(true) as HTMLElement;
-    
-    // Add a title at the top
-    const titleDiv = document.createElement('div');
-    titleDiv.innerHTML = `<h2 style="font-size: 24px; margin-bottom: 15px; text-align: center; color: #3B82F6;">Video Summary</h2>`;
-    content.insertBefore(titleDiv, content.firstChild);
-    
-    // Generate the PDF
-    html2pdf().set(options).from(content).save();
+      // Create a clone of the content to modify for PDF
+      const content = summaryContentRef.current.cloneNode(true) as HTMLElement;
+      
+      // Add a title at the top
+      const titleDiv = document.createElement('div');
+      titleDiv.innerHTML = `<h2 style="font-size: 24px; margin-bottom: 15px; text-align: center; color: #3B82F6;">Video Summary</h2>`;
+      content.insertBefore(titleDiv, content.firstChild);
+      
+      // Generate the PDF
+      html2pdf().set(options).from(content).save();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   return (
