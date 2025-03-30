@@ -49,7 +49,7 @@ export default function SummaryDisplay({ summary }: SummaryProps) {
       
       // Also download the file
       downloadMarkdown();
-    } catch (_error) {
+    } catch {
       setCopyFeedback('Failed to copy. Try again.');
       setTimeout(() => setCopyFeedback(null), 2000);
     }
