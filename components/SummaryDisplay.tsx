@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 // Remove static import of html2pdf
 // import html2pdf from 'html2pdf.js';
 
