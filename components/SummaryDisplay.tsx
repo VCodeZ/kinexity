@@ -49,7 +49,7 @@ export default function SummaryDisplay({ summary }: SummaryProps) {
       
       // Also download the file
       downloadMarkdown();
-    } catch (err) {
+    } catch (_error) {
       setCopyFeedback('Failed to copy. Try again.');
       setTimeout(() => setCopyFeedback(null), 2000);
     }
@@ -79,7 +79,7 @@ export default function SummaryDisplay({ summary }: SummaryProps) {
       filename: 'summary.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as 'portrait' }
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
     };
 
     // Create a clone of the content to modify for PDF
