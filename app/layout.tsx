@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
 import DarkModeProvider from "../components/DarkModeProvider";
 
 const inter = Inter({
